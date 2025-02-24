@@ -3,7 +3,13 @@ export type TPosition = {
   row: number
 } // int
 
+export type TScroll = {
+  position: TPosition
+  limit: TPosition
+}
+
 export type TViewport = {
+  container: HTMLDivElement | null
   cols: number // int
   rows: number // int
   width: number // px

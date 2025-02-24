@@ -2,12 +2,14 @@ import { useUnit } from 'effector-react'
 import { CSSProperties, useCallback, useEffect } from 'react'
 import { useWindowResize } from '@shared'
 import { CELL_BOX, GRID_BOX } from '../constants'
-import { $viewport, $grid, calcViewportFx, initGridFx } from '../model'
+import { useViewportContainer } from '../hooks'
+import { $grid, $viewport, calcViewportFx, initGridFx } from '../model'
 import { Cell } from './Cell'
 
 export const Grid: FC = () => {
-  const viewport = useUnit($viewport)
   const grid = useUnit($grid)
+  const viewport = useUnit($viewport)
+  const container = useViewportContainer()
   const calcViewport = useUnit(calcViewportFx)
   const initGrid = useUnit(initGridFx)
 
@@ -22,6 +24,9 @@ export const Grid: FC = () => {
   useEffect(() => {
     void initGrid()
   }, [initGrid])
+  useEffect(() => {
+    container.current?.scrollTo(0, 0)
+  }, [container, viewport])
 
   return (
     <div
@@ -35,6 +40,7 @@ export const Grid: FC = () => {
       }
     >
       <div
+        ref={container}
         className="relative z-10 border rounded-lg overflow-hidden bg-white box-border flex flex-col"
         style={
           {
@@ -54,6 +60,7 @@ export const Grid: FC = () => {
             {cells.map((cell) => (
               <Cell key={`cell-${cell.id}`} cell={cell} />
             ))}
+            <div className="size-[var(--cell-size)] shrink-0" />
           </div>
         ))}
       </div>
