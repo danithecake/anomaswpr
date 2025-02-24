@@ -1,11 +1,11 @@
 @keyframes faded-xy-slide {
   0% {
-    background-color: theme('colors.neutral.100');
+    background-color: theme('colors.stone.100');
     opacity: 1;
     transform: translate(8px, 8px);
   }
   100% {
-    background-color: theme('colors.white');
+    background-color: var(--bg-primary);
     opacity: 0.5;
     transform: translate(12px, 12px);
   }
