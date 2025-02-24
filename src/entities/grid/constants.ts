@@ -18,8 +18,13 @@ export const GRID_SIZE = {
 
 export const GRID_BOX = {
   gap: {
-    outter: 16,
-    inner: 2,
+    outter: 48,
+    inner: 4,
   },
   border: 1,
 } as const // px
+
+export const GRID_SCROLL_INCREMENT = {
+  base: 1,
+  medium: 3,
+} as const // int
