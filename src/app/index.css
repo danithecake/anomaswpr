@@ -27,3 +27,19 @@ html, body {
 .text-primary {
   color: var(--text-primary);
 }
+
+.animate-isometric-float {
+  background-color: theme('colors.stone.100');
+  animation: 1.5s isometric-float ease-in-out infinite alternate-reverse both;
+}
+
+@keyframes isometric-float {
+  0% {
+    background-color: theme('colors.stone.100');
+    transform: translate(var(--isometric-float-min), var(--isometric-float-min));
+  }
+  100% {
+    background-color: var(--bg-primary);
+    transform: translate(var(--isometric-float-max), var(--isometric-float-max));
+  }
+}
