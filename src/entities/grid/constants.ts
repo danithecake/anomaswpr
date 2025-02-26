@@ -3,7 +3,7 @@ export const CELL_SIZE = {
   max: 32,
 } as const // px
 
-export const CELL_VIEWPORT = {
+export const CELL_BOX = {
   gap: {
     outter: 2,
     inner: 1,
@@ -16,10 +16,15 @@ export const GRID_SIZE = {
   cols: 30,
 } as const
 
-export const GRID_VIEWPORT = {
+export const GRID_BOX = {
   gap: {
-    outter: 16,
+    outter: 48,
     inner: 2,
   },
   border: 1,
 } as const // px
+
+export const GRID_SCROLL_INCREMENT = {
+  base: 1,
+  medium: 3,
+} as const // int

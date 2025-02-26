@@ -1,1 +1,1 @@
-export { calcGridBounds } from './calcGridBounds'
+export { generateViewportScrollers } from './generateViewportScrollers'

@@ -1,48 +1,70 @@
-import clsx from 'clsx'
-import { CSSProperties } from 'react'
-import { CELL_VIEWPORT, GRID_VIEWPORT } from '../constants'
-import { useGrid } from '../hooks'
+import { useUnit } from 'effector-react'
+import { CSSProperties, useCallback, useEffect } from 'react'
+import { useWindowResize } from '@shared'
+import { CELL_BOX, GRID_BOX } from '../constants'
+import { useViewportContainer } from '../hooks'
+import { $grid, $viewport, calcViewportFx, initGridFx } from '../model'
 import { Cell } from './Cell'
-import cssModule from './Grid.module.css'
 
 export const Grid: FC = () => {
-  const grid = useGrid()
+  const grid = useUnit($grid)
+  const viewport = useUnit($viewport)
+  const container = useViewportContainer()
+  const calcViewport = useUnit(calcViewportFx)
+  const initGrid = useUnit(initGridFx)
+
+  const handleWindowResize = useCallback(() => {
+    void calcViewport(document.body.getBoundingClientRect())
+  }, [calcViewport])
+
+  useWindowResize(handleWindowResize)
+  useEffect(() => {
+    handleWindowResize()
+  }, [handleWindowResize])
+  useEffect(() => {
+    void initGrid()
+  }, [initGrid])
+  useEffect(() => {
+    container.current?.scrollTo(0, 0)
+  }, [container, viewport])
 
   return (
     <div
       className="relative min-w-max min-h-max"
-      style={{
-        margin: GRID_VIEWPORT.gap.outter,
-      }}
+      style={
+        {
+          '--isometric-float-min': '6px',
+          '--isometric-float-max': '10px',
+          margin: GRID_BOX.gap.outter,
+        } as CSSProperties
+      }
     >
       <div
-        className="relative z-10 border rounded-lg overflow-hidden bg-white box-border"
+        ref={container}
+        className="relative z-10 border rounded-lg overflow-hidden bg-white box-border flex flex-col"
         style={
           {
-            '--cell-size': `${grid.bounds.cell}px`,
-            '--cell-margin': `${CELL_VIEWPORT.gap.outter}px`,
-            '--cell-padding': `${CELL_VIEWPORT.gap.inner}px`,
-            '--cell-border-width': `${CELL_VIEWPORT.border}px`,
-            width: grid.bounds.width.visible,
-            height: grid.bounds.height.visible,
-            padding: GRID_VIEWPORT.gap.inner,
-            borderWidth: GRID_VIEWPORT.border,
+            '--cell-size': `${viewport.cell}px`,
+            '--cell-margin': `${CELL_BOX.gap.outter}px`,
+            '--cell-padding': `${CELL_BOX.gap.inner}px`,
+            '--cell-border-width': `${CELL_BOX.border}px`,
+            width: viewport.width,
+            height: viewport.height,
+            padding: GRID_BOX.gap.inner,
+            borderWidth: GRID_BOX.border,
           } as CSSProperties
         }
       >
-        <div
-          className="w-full h-full flex flex-wrap box-border"
-          style={{
-            width: grid.bounds.width.full,
-            height: grid.bounds.height.full,
-          }}
-        >
-          {grid.cells.map((cell) => (
-            <Cell key={`cell-${cell.id}`} cell={cell} />
-          ))}
-        </div>
+        {grid.map((cells, row) => (
+          <div key={`row-${row}`} className="flex min-h-min">
+            {cells.map((cell) => (
+              <Cell key={`cell-${cell.id}`} cell={cell} />
+            ))}
+            <div className="size-[var(--cell-size)] shrink-0" />
+          </div>
+        ))}
       </div>
-      <div className={clsx(cssModule.floatedUnderlayer, 'border rounded-lg')} />
+      <div className="absolute inset-0 border rounded-lg animate-isometric-float" />
     </div>
   )
 }

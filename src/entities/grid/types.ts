@@ -1,29 +1,25 @@
+export type TPosition = {
+  col: number
+  row: number
+} // int
+
+export type TScroll = {
+  position: TPosition
+  limit: TPosition
+}
+
+export type TViewport = {
+  container: HTMLDivElement | null
+  cols: number // int
+  rows: number // int
+  width: number // px
+  height: number // px
+  cell: number // px
+}
+
 export type TCell = {
-  id: number
-  position: {
-    col: number
-    row: number
-  }
+  id: string
+  position: TPosition
 }
 
-export type TGridBounds = {
-  cell: number
-  gutter: {
-    inner: number
-    outter: number
-    full: number
-  }
-  width: {
-    full: number
-    visible: number
-  }
-  height: {
-    full: number
-    visible: number
-  }
-} // px
-
-export type TGrid = {
-  bounds: TGridBounds
-  cells: TCell[]
-}
+export type TGrid = TCell[][]
