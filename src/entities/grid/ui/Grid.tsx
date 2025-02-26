@@ -1,11 +1,9 @@
-import clsx from 'clsx'
 import { useUnit } from 'effector-react'
 import { CSSProperties, useCallback, useEffect } from 'react'
 import { useWindowResize } from '@shared'
 import { CELL_BOX, GRID_BOX } from '../constants'
 import { $viewport, $grid, calcViewportFx, initGridFx } from '../model'
 import { Cell } from './Cell'
-import cssModule from './Grid.module.css'
 
 export const Grid: FC = () => {
   const viewport = useUnit($viewport)
@@ -28,9 +26,13 @@ export const Grid: FC = () => {
   return (
     <div
       className="relative min-w-max min-h-max"
-      style={{
-        margin: GRID_BOX.gap.outter,
-      }}
+      style={
+        {
+          '--isometric-float-min': '6px',
+          '--isometric-float-max': '10px',
+          margin: GRID_BOX.gap.outter,
+        } as CSSProperties
+      }
     >
       <div
         className="relative z-10 border rounded-lg overflow-hidden bg-white box-border flex flex-col"
@@ -48,12 +50,14 @@ export const Grid: FC = () => {
         }
       >
         {grid.map((cells, row) => (
-          <div key={`row-${row}`} className="flex min-h-min w-[calc(100vw+var(--cell-size))]">
-            {cells.map((cell) => <Cell key={`cell-${cell.id}`} cell={cell} />)}
+          <div key={`row-${row}`} className="flex min-h-min">
+            {cells.map((cell) => (
+              <Cell key={`cell-${cell.id}`} cell={cell} />
+            ))}
           </div>
         ))}
       </div>
-      <div className={clsx(cssModule.floatedUnderlayer, 'border rounded-lg')} />
+      <div className="absolute inset-0 border rounded-lg animate-isometric-float" />
     </div>
   )
 }
