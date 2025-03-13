@@ -10,7 +10,7 @@
   width: 100%;
   height: 100%;
   box-sizing: border-box;
-  box-shadow: inset 0px 0px 0px 1px var(--color-black) ;
+  box-shadow: inset 0px 0px 0px 1px theme('colors.black');
   background-color: transparent;
   cursor: pointer;
   transform: scale(1);
@@ -18,6 +18,6 @@
 }
 
 .content:hover {
-  background-color: var(--color-gray-100);
+  background-color: theme('colors.neutral.100');
   transform: scale(0.96);
 }
